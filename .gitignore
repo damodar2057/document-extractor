@@ -1,3 +1,50 @@
 rate-confirmation-docs
-.venv
-/.env
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyCharm project files
+.idea/
+
+# Virtual environment folders
+.venv/
+venv/
+env/
+ENV/
+
+# Environment variable files
+.env
+.env.*
+
+# macOS files
+.DS_Store
+
+# Logs
+*.log
+
+# Python SQLite DB files (if any)
+*.sqlite3
+
+# Coverage reports
+.coverage
+htmlcov/
+.coverage.*
+
+# pytest cache
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+
+# pytype static type checker
+.pytype/
+
+# PyCharm local history
+.idea/.idea.LocalHistory/
+
+# JetBrains specific
+*.iml
+
+# Other
+*.swp
