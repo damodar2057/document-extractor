@@ -156,9 +156,18 @@ Parse **Rate Confirmation documents** and extract all key load, scheduling, cont
         * `"carrierName"` (full company name)
     * `"dotNumber"` (carrier DOT number)
     * `"mcNumber"` (carrier MC number)
+   
     * `"contactPerson"` (carrier contact name, if any)
     * `"contactPhone"` (carrier contact phone)
     * `"contactEmail"` (carrier contact email)
+    * "stopsCount" — number of intermediate stops only (exclude pickup and dropoff)
+
+
+    DOT & MC extraction rule (overrides any other wording):
+        - Scan the document for a 6-7-digit number.
+        - Only accept it as `dotNumber` if the token immediately before it (ignoring spaces, “#”, “-”, “:”) is **DOT** or **USDOT**.
+        - Only accept it as `mcNumber` if the token immediately before it is **MC** or **MOTOR CARRIER**.
+        - If neither condition is met, set the field to `null`.
 
     #### 🧾 Invoice:
 
@@ -175,6 +184,8 @@ Parse **Rate Confirmation documents** and extract all key load, scheduling, cont
             * `"contactEntityName"` and `"contactEntityPhone"` at the stop (referring to the warehouse, shipper/consignee, or company who will engage with the carrier)
     * `"instructions"` or special notes
 
+    
+
     #### ⚠️ Validation:
 
     * Set `"isRcValid"` to `true` **only if** document is confirmed to be a Rate Confirmation or Rate Agreement.
@@ -184,6 +195,7 @@ Parse **Rate Confirmation documents** and extract all key load, scheduling, cont
 
     * Do not guess or assume values not explicitly present.
     * If a value is missing, set the field to `null`.
+    IMPORTANT: use ONLY the information that literally appears in the provided document. Do not infer, guess, or reuse any data from previous documents.
 
     ---
 """

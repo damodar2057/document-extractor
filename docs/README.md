@@ -64,3 +64,13 @@ Normalize currency, dates, addresses
 [Structured JSON Output]
       ↓
 [Feedback / Audit / Retraining]
+
+
+# startup 
+python -m venv venv
+
+venv\Scripts\activate
+
+pip install -r requirements.txt
+
+uvicorn app.main:app --reload
