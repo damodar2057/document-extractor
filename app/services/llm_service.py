@@ -7,6 +7,7 @@ from openai.types.chat import (
     ChatCompletionMessageParam,
 )
 from app.core import settings
+from app.prompts.expense_prompt import EXPENSE_EXTRACT_PROMPT
 from app.prompts.rc_prompt import RC_EXTRACT_PROMPT
 import re
 def clean_and_parse_json(text: str):
@@ -16,11 +17,34 @@ def clean_and_parse_json(text: str):
     return json.loads(cleaned)
 
 
-def extract_rc_data(texts: List[str]) -> str:
+def extract_rc_data_by_llm(texts: List[str]) -> str:
     client = OpenAI(api_key=settings.openai_api_key)
 
     messages: List[ChatCompletionMessageParam] = [
         ChatCompletionSystemMessageParam(content=RC_EXTRACT_PROMPT, role='system'),
+        ChatCompletionUserMessageParam(content="\n\n".join(texts), role='user'),
+    ]
+
+    try:
+        response = client.chat.completions.create(
+            model=settings.openai_model,
+            messages=messages,
+            temperature=0.2,
+        )
+        content =  clean_and_parse_json(response.choices[0].message.content)
+        print(content)
+        # json_data = json.loads(content)
+        return content
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return f"Error: {e}"
+
+def extract_expense_data_by_llm(texts: List[str]) -> str:
+    client = OpenAI(api_key=settings.openai_api_key)
+
+    messages: List[ChatCompletionMessageParam] = [
+        ChatCompletionSystemMessageParam(content=EXPENSE_EXTRACT_PROMPT, role='system'),
         ChatCompletionUserMessageParam(content="\n\n".join(texts), role='user'),
     ]
 

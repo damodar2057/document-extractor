@@ -35,5 +35,5 @@ def extract_document(pdf_path: str) -> str:
             break
 
     """ Now pass it to llm for text extraction """
-    return extract_rc_data(final_texts)
+    return final_texts
 
