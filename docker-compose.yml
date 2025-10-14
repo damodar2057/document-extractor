@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  document-extractor:
+    container_name: document-extractor
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8941:8941"
+    env_file:
+      - .env         
+    restart: unless-stopped
