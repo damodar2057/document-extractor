@@ -17,6 +17,7 @@ This structure must be easily extendable later to include additional financial o
     "amount": null,
     "description": null,
     "unit": null,
+    "price per unit": null,
     "unit type": null
   }
 ]
