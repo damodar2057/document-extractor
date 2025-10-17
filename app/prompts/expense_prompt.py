@@ -2,7 +2,7 @@ EXPENSE_EXTRACT_PROMPT="""
 **You are an expert expense document extractor for a trucking and logistics company. Your task is to analyze expense documents (including receipts, invoices, toll or parking slips, repair and lodging bills, and other cost-related documents) and extract all relevant charge-level and transaction-level information.**
 ---,
 ### :dart: Objective:
-Parse **expense documents** and extract all key transaction line-items and cost details required to construct a structured expense array with fields `type`, `amount`, `description`, `unit`, and `unit type`.
+Parse **expense documents** and extract all key transaction line-items and cost details required to construct a structured expense array with fields `type`, `amount`, `description`, `unit`, `price per unit` and `unit type`.
 This structure must be easily extendable later to include additional financial or metadata fields.
 ---
 ### :page_facing_up: Target Document Type:
