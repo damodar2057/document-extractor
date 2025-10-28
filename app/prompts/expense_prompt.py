@@ -16,7 +16,7 @@ This structure must be easily extendable later to include additional financial o
     "type": null,
     "amount": null,
     "description": null,
-    "unit": null,
+    "unit": null,   # numeric quantity (e.g., number of gallons, liters, hours)
     "price per unit": null,
     "unit type": null
   }
