@@ -29,6 +29,7 @@ Parse **Rate Confirmation documents** and extract all key load, scheduling, cont
     "dropoffFacilityPhone": null,
     "pickupInstructions": null,
     "dropoffInstructions": null,
+    "loadRefId": null;
     "distance": null,
     "equipmentType": null,
     "equipmentSize": null,
@@ -160,6 +161,9 @@ Parse **Rate Confirmation documents** and extract all key load, scheduling, cont
     * `"contactPerson"` (carrier contact name, if any)
     * `"contactPhone"` (carrier contact phone)
     * `"contactEmail"` (carrier contact email)
+    loadRefId must be a short, structured identifier (e.g., alphanumeric code like RC12345, BOL-789,"BOL #", "PRO #", "Load ID", "Reference #", or numeric ID like 987654).
+If the value after “Ref#” contains words, units, product specs, or descriptions (e.g., “575 WATTAGE”, “Fragile Glass”, “Model XYZ”), ignore it and set loadRefId to null.
+Only extract if the reference is clearly a tracking or load ID, not a commodity attribute. 
     * "stopsCount" — number of intermediate stops only (exclude pickup and dropoff)
 
 
