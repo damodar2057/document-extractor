@@ -13,6 +13,95 @@ def is_allowed_file(filename: str) -> bool:
     """Check if file type is allowed"""
     return any(filename.lower().endswith(ext) for ext in ALLOWED_EXTENSIONS)
 
+
+
+@router.post("/extract-multiple") 
+async def extract_rc_multiple_text(files: list[UploadFile] = File(...)): 
+    """Extract RC (Registration Certificate) data from multiple PDF or image files"""
+    
+    # Validate input
+    if not files:
+        raise HTTPException(status_code=400, detail="No files provided")
+    
+    if len(files) > 10:  # Optional: limit number of files
+        raise HTTPException(status_code=400, detail="Maximum 10 files allowed per request")
+    
+    results = []
+    temp_paths = []
+    
+    try:
+        # Process each file
+        for file in files:
+            # Check if filename exists
+            if not file.filename:
+                results.append({
+                    "filename": "unknown",
+                    "status": "error",
+                    "error": "No filename provided"
+                })
+                continue
+            
+            if not is_allowed_file(file.filename):
+                results.append({
+                    "filename": file.filename,
+                    "status": "error",
+                    "error": f"Unsupported file type. Allowed types: {', '.join(ALLOWED_EXTENSIONS)}"
+                })
+                continue
+            
+            # Determine file extension
+            file_extension = os.path.splitext(file.filename)[1].lower()
+            
+            # Save uploaded file temporarily
+            try:
+                with tempfile.NamedTemporaryFile(delete=False, suffix=file_extension) as tmp:
+                    shutil.copyfileobj(file.file, tmp)
+                    temp_path = tmp.name
+                    temp_paths.append(temp_path)
+                
+                # Extract text from PDF or image
+                extracted_texts = extract_document(temp_path, file.filename)
+                
+                # Process with LLM
+                rc_data = extract_rc_data_by_llm(extracted_texts)
+                
+                results.append({
+                    "filename": file.filename,
+                    "status": "success",
+                    "data": rc_data
+                })
+                
+            except ValueError as e:
+                results.append({
+                    "filename": file.filename,
+                    "status": "error",
+                    "error": str(e)
+                })
+            except Exception as e:
+                results.append({
+                    "filename": file.filename,
+                    "status": "error",
+                    "error": f"Error processing document: {str(e)}"
+                })
+        
+        # Check if all files failed
+        if all(r["status"] == "error" for r in results):
+            raise HTTPException(status_code=400, detail=results)
+        
+        return {
+            "total_files": len(files),
+            "processed": sum(1 for r in results if r["status"] == "success"),
+            "failed": sum(1 for r in results if r["status"] == "error"),
+            "results": results
+        }
+        
+    finally:
+        # Clean up all temporary files
+        for temp_path in temp_paths:
+            if os.path.exists(temp_path):
+                os.unlink(temp_path)
+
+
 @router.post("/extract")
 async def extract_rc_text(file: UploadFile = File(...)):
     """Extract RC (Registration Certificate) data from PDF or image"""
