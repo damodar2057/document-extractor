@@ -162,7 +162,7 @@ Parse **Rate Confirmation documents** and extract all key load, scheduling, cont
     * `"contactPhone"` (carrier contact phone)
     * `"contactEmail"` (carrier contact email)
     loadRefId must be a short, structured identifier Give this priority: PRO → BOL → Order → Load → Ref.
-Return only keyword + short alphanumeric code (e.g., PRO#1234).
+Return the short alphanumeric or numeric code right after these keywords (e.g., PRO#1234, BOL-5678, Ref#RC987,Order#1549,489516).
 Reject if the value after the keyword contains words, product specs, wattage, dimensions, weights, or descriptions.
 Ignore pickup/delivery/other labels like PU#, PO#, INV#, APPT, QTY, WT.
 If no clean tracking ID found, return null.
