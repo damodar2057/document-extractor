@@ -161,8 +161,11 @@ Parse **Rate Confirmation documents** and extract all key load, scheduling, cont
     * `"contactPerson"` (carrier contact name, if any)
     * `"contactPhone"` (carrier contact phone)
     * `"contactEmail"` (carrier contact email)
-    loadRefId must be a short, structured identifier (e.g., alphanumeric code like RC12345, BOL-789,"BOL #", "PRO #", "Load ID", "Reference #", or numeric ID like 987654).
-If the value after “Ref#” contains words, units, product specs, or descriptions (e.g., “575 WATTAGE”, “Fragile Glass”, “Model XYZ”), ignore it and set loadRefId to null.
+    loadRefId must be a short, structured identifier Give this priority: PRO → BOL → Order → Load → Ref.
+Return only keyword + short alphanumeric code (e.g., PRO#1234).
+Reject if the value after the keyword contains words, product specs, wattage, dimensions, weights, or descriptions.
+Ignore pickup/delivery/other labels like PU#, PO#, INV#, APPT, QTY, WT.
+If no clean tracking ID found, return null.
 Only extract if the reference is clearly a tracking or load ID, not a commodity attribute. 
     * "stopsCount" — number of intermediate stops only (exclude pickup and dropoff)
 
