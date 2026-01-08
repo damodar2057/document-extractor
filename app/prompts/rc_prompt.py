@@ -190,6 +190,7 @@ Only extract if the reference is clearly a tracking or load ID, not a commodity 
                                         * `"arrivalTime"` and/or `"departureTime"` in ISO format, if available
             * `"contactEntityName"` and `"contactEntityPhone"` at the stop (referring to the warehouse, shipper/consignee, or company who will engage with the carrier)
     * `"instructions"` or special notes
+    *  `"stopDate"` exactly the date of the stop in ISO format `YYYY-MM-DD` provided in the stop details.
 
     
 
